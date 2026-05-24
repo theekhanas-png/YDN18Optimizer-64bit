@@ -20,31 +20,44 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Install Gradle and generate wrapper
+        run: |
+          # Download Gradle 8.4
+          wget -q https://services.gradle.org/distributions/gradle-8.4-bin.zip -O gradle-dist.zip
+          unzip -q gradle-dist.zip -d /opt/gradle
+          GRADLE_BIN=/opt/gradle/gradle-8.4/bin/gradle
+          chmod +x $GRADLE_BIN
+          echo "Gradle version:"
+          $GRADLE_BIN --version
+          # Generate wrapper (creates gradlew + gradle/wrapper/gradle-wrapper.jar)
+          $GRADLE_BIN wrapper --gradle-version=8.4 --distribution-type=bin
+          chmod +x gradlew
+          echo "Wrapper generated:"
+          ls -la gradle/wrapper/
+          ls -la gradlew
 
-      - name: Cache Gradle packages
+      - name: Cache Gradle
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v3
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --info
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
         env:
-          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Xmx3g"
+          GRADLE_OPTS: "-Xmx3g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
+
+      - name: Show APK info
+        run: |
+          echo "APK built:"
+          find app/build/outputs/apk -name "*.apk" -exec ls -lh {} \;
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
@@ -54,9 +67,9 @@ jobs:
           retention-days: 30
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew assembleRelease --no-daemon
         env:
-          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Xmx3g"
+          GRADLE_OPTS: "-Xmx3g -XX:MaxMetaspaceSize=512m"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
