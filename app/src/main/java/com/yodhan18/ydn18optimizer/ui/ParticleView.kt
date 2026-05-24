@@ -14,7 +14,7 @@ class ParticleView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
-    data class Particle(
+    private data class Particle(
         var x: Float,
         var y: Float,
         var vx: Float,
@@ -26,10 +26,10 @@ class ParticleView @JvmOverloads constructor(
 
     private val particles = mutableListOf<Particle>()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var running = true
+    private var running = false
     private val random = Random.Default
 
-    private val COLORS = intArrayOf(
+    private val colors = intArrayOf(
         Color.parseColor("#FF6D00"),
         Color.parseColor("#FFD600"),
         Color.parseColor("#FF9100"),
@@ -37,35 +37,28 @@ class ParticleView @JvmOverloads constructor(
         Color.parseColor("#FF1744")
     )
 
-    init {
-        post { spawnParticles() }
-    }
-
-    private fun spawnParticles() {
-        if (width == 0 || height == 0) {
-            postDelayed({ spawnParticles() }, 100)
-            return
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (w > 0 && h > 0 && !running) {
+            running = true
+            repeat(50) { addParticle() }
+            animate()
         }
-        repeat(60) {
-            addParticle()
-        }
-        animate()
     }
 
     private fun addParticle() {
         val cx = width / 2f
         val cy = height / 2f
-        val angle = random.nextFloat() * Math.PI * 2
-        val speed = random.nextFloat() * 4f + 1f
+        val angle = random.nextFloat() * (Math.PI * 2).toFloat()
         particles.add(
             Particle(
                 x = cx + (random.nextFloat() - 0.5f) * 80f,
                 y = cy + (random.nextFloat() - 0.5f) * 40f,
-                vx = cos(angle).toFloat() * speed * 0.5f,
+                vx = cos(angle) * (random.nextFloat() * 2f),
                 vy = -(random.nextFloat() * 5f + 2f),
                 radius = random.nextFloat() * 6f + 2f,
                 alpha = 1f,
-                color = COLORS[random.nextInt(COLORS.size)]
+                color = colors[random.nextInt(colors.size)]
             )
         )
     }
@@ -75,7 +68,7 @@ class ParticleView @JvmOverloads constructor(
         postDelayed({
             updateParticles()
             invalidate()
-            animate()
+            if (running) animate()
         }, 16)
     }
 
@@ -84,18 +77,13 @@ class ParticleView @JvmOverloads constructor(
         for (p in particles) {
             p.x += p.vx
             p.y += p.vy
-            p.vy += 0.05f // slight gravity
+            p.vy += 0.05f
             p.alpha -= 0.015f
             p.radius -= 0.03f
-            if (p.alpha <= 0 || p.radius <= 0) {
-                toRemove.add(p)
-            }
+            if (p.alpha <= 0f || p.radius <= 0f) toRemove.add(p)
         }
-        particles.removeAll(toRemove)
-        // Spawn new particles
-        if (particles.size < 60) {
-            repeat(3) { addParticle() }
-        }
+        particles.removeAll(toRemove.toSet())
+        while (particles.size < 50) addParticle()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -109,5 +97,6 @@ class ParticleView @JvmOverloads constructor(
 
     fun stop() {
         running = false
+        particles.clear()
     }
 }

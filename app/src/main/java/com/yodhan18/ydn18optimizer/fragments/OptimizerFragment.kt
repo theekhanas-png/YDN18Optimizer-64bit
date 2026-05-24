@@ -20,7 +20,14 @@ import com.yodhan18.ydn18optimizer.DeviceInfoProvider
 import com.yodhan18.ydn18optimizer.R
 import com.yodhan18.ydn18optimizer.ui.OptimizerRingView
 import com.yodhan18.ydn18optimizer.ui.ScoreView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class OptimizerFragment : Fragment() {
@@ -52,9 +59,12 @@ class OptimizerFragment : Fragment() {
     private var pollingJob: Job? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_optimizer, container, false)
+    ): View {
+        return inflater.inflate(R.layout.fragment_optimizer, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,27 +86,33 @@ class OptimizerFragment : Fragment() {
         tvOptimizingStep  = view.findViewById(R.id.tvOptimizingStep)
         tvAllGood         = view.findViewById(R.id.tvAllGood)
 
-        setupButton(view.findViewById(R.id.btnFullOptimize)) {
+        val btnFull: Button = view.findViewById(R.id.btnFullOptimize)
+        val btnRam: Button = view.findViewById(R.id.btnRamOptimize)
+        val btnStorage: Button = view.findViewById(R.id.btnStorageClean)
+        val btnCpu: Button = view.findViewById(R.id.btnBoostCpu)
+        val btnGame: Button = view.findViewById(R.id.btnGameOptimize)
+
+        setupButton(btnFull) {
             runOptimization("FULL MOBILE OPTIMIZATION", listOf(
+                "Scanning system...",
                 "Killing background processes...",
                 "Clearing app caches...",
                 "Freeing RAM memory...",
                 "Running garbage collection...",
-                "Optimizing CPU governor...",
-                "Cleaning temp files...",
-                "Optimization complete!"
+                "Optimizing CPU...",
+                "Done!"
             ))
         }
-        setupButton(view.findViewById(R.id.btnRamOptimize)) {
+        setupButton(btnRam) {
             runOptimization("RAM OPTIMIZER", listOf(
                 "Scanning RAM usage...",
-                "Killing background processes...",
+                "Killing background apps...",
                 "Running garbage collection...",
                 "Freeing memory...",
                 "RAM optimized!"
             ))
         }
-        setupButton(view.findViewById(R.id.btnStorageClean)) {
+        setupButton(btnStorage) {
             runOptimization("STORAGE CLEANER", listOf(
                 "Scanning cache files...",
                 "Clearing app caches...",
@@ -105,21 +121,21 @@ class OptimizerFragment : Fragment() {
                 "Storage cleaned!"
             ))
         }
-        setupButton(view.findViewById(R.id.btnBoostCpu)) {
+        setupButton(btnCpu) {
             runOptimization("CPU BOOST", listOf(
                 "Analyzing CPU load...",
-                "Killing CPU-heavy processes...",
+                "Killing heavy processes...",
                 "Running garbage collection...",
                 "CPU boosted!"
             ))
         }
-        setupButton(view.findViewById(R.id.btnGameOptimize)) {
+        setupButton(btnGame) {
             runOptimization("GAME OPTIMIZATION", listOf(
                 "Detecting installed games...",
-                "Killing background apps...",
                 "Freeing RAM for gaming...",
+                "Killing background apps...",
                 "Clearing cache...",
-                "Game mode activated!"
+                "Game mode ON!"
             ))
         }
 
@@ -137,16 +153,18 @@ class OptimizerFragment : Fragment() {
                     )
                     duration = 80
                 }
-                val scaleUp = AnimatorSet().apply {
-                    playTogether(
-                        ObjectAnimator.ofFloat(btn, "scaleX", 0.95f, 1f),
-                        ObjectAnimator.ofFloat(btn, "scaleY", 0.95f, 1f)
-                    )
-                    duration = 120
-                    interpolator = BounceInterpolator()
-                }
                 scaleDown.start()
-                handler.postDelayed({ scaleUp.start() }, 80)
+                handler.postDelayed({
+                    val scaleUp = AnimatorSet().apply {
+                        playTogether(
+                            ObjectAnimator.ofFloat(btn, "scaleX", 0.95f, 1f),
+                            ObjectAnimator.ofFloat(btn, "scaleY", 0.95f, 1f)
+                        )
+                        duration = 120
+                        interpolator = BounceInterpolator()
+                    }
+                    scaleUp.start()
+                }, 80)
 
                 val prefs = requireContext()
                     .getSharedPreferences("ydn18_prefs", Context.MODE_PRIVATE)
@@ -160,16 +178,16 @@ class OptimizerFragment : Fragment() {
 
     private fun loadDeviceInfo() {
         scope.launch {
-            val name    = withContext(Dispatchers.IO) { DeviceInfoProvider.getDeviceName() }
-            val proc    = withContext(Dispatchers.IO) { DeviceInfoProvider.getProcessor() }
-            val ramGb   = DeviceInfoProvider.getTotalRamGb(requireContext())
-            val storGb  = DeviceInfoProvider.getTotalStorageGb()
+            val name = withContext(Dispatchers.IO) { DeviceInfoProvider.getDeviceName() }
+            val proc = withContext(Dispatchers.IO) { DeviceInfoProvider.getProcessor() }
+            val ramGb = DeviceInfoProvider.getTotalRamGb(requireContext())
+            val storGb = DeviceInfoProvider.getTotalStorageGb()
 
             if (!isAdded) return@launch
             tvDeviceName.text = name
-            tvProcessor.text  = if (proc.length > 28) proc.take(25) + "..." else proc
-            tvRam.text        = "%.1f GB".format(ramGb)
-            tvStorage.text    = "%.0f GB".format(storGb)
+            tvProcessor.text = if (proc.length > 26) proc.take(23) + "..." else proc
+            tvRam.text = String.format("%.1f GB", ramGb)
+            tvStorage.text = String.format("%.0f GB", storGb)
         }
     }
 
@@ -177,26 +195,30 @@ class OptimizerFragment : Fragment() {
         pollingJob?.cancel()
         pollingJob = scope.launch {
             while (isActive && !isOptimizing) {
-                val cpu     = withContext(Dispatchers.IO) { DeviceInfoProvider.getCpuLoadPercent() }
-                val ram     = DeviceInfoProvider.getRamUsedPercent(requireContext())
-                val storage = DeviceInfoProvider.getStorageUsedPercent()
-
-                cpuLoad     = cpu
-                ramLoad     = ram
-                storageLoad = storage
-
-                if (isAdded) updateStatViews(cpu, ram, storage)
+                try {
+                    val cpu = withContext(Dispatchers.IO) {
+                        DeviceInfoProvider.getCpuLoadPercent()
+                    }
+                    val ram = DeviceInfoProvider.getRamUsedPercent(requireContext())
+                    val storage = DeviceInfoProvider.getStorageUsedPercent()
+                    cpuLoad = cpu
+                    ramLoad = ram
+                    storageLoad = storage
+                    if (isAdded) updateStatViews(cpu, ram, storage)
+                } catch (e: Exception) {
+                    // ignore polling errors
+                }
                 delay(3000)
             }
         }
     }
 
     private fun updateStatViews(cpu: Int, ram: Int, storage: Int) {
-        pbCpu.progress     = cpu
-        pbRam.progress     = ram
+        pbCpu.progress = cpu
+        pbRam.progress = ram
         pbStorage.progress = storage
-        tvCpuLoad.text     = "$cpu%"
-        tvRamLoad.text     = "$ram%"
+        tvCpuLoad.text = "$cpu%"
+        tvRamLoad.text = "$ram%"
         tvStorageLoad.text = "$storage%"
         scoreView.setScore(DeviceInfoProvider.calculateScore(cpu, ram, storage))
     }
@@ -206,21 +228,18 @@ class OptimizerFragment : Fragment() {
         pollingJob?.cancel()
 
         tvOptimizingLabel.text = label
-        tvOptimizingStep.text  = steps.firstOrNull() ?: ""
-        tvAllGood.visibility   = View.GONE
+        tvOptimizingStep.text = steps.firstOrNull() ?: ""
+        tvAllGood.visibility = View.GONE
         optimizingOverlay.visibility = View.VISIBLE
         optimizingOverlay.alpha = 0f
         optimizingOverlay.animate().alpha(1f).setDuration(300).start()
         ringView.startAnimation()
 
         scope.launch {
-            // Show each step with a delay
-            val stepDelay = 2800L / steps.size.coerceAtLeast(1)
+            val stepDelay = if (steps.isNotEmpty()) 2800L / steps.size else 500L
             for ((index, step) in steps.withIndex()) {
                 if (!isActive) break
-                tvOptimizingStep.text = step
-
-                // Run actual optimization on IO thread in parallel
+                if (isAdded) tvOptimizingStep.text = step
                 if (index == 0) {
                     withContext(Dispatchers.IO) {
                         performOptimization(label)
@@ -231,10 +250,9 @@ class OptimizerFragment : Fragment() {
 
             if (!isAdded) return@launch
 
-            // Show success
             tvOptimizingLabel.text = "OPTIMIZATION COMPLETE"
-            tvOptimizingStep.text  = ""
-            tvAllGood.visibility   = View.VISIBLE
+            tvOptimizingStep.text = ""
+            tvAllGood.visibility = View.VISIBLE
             tvAllGood.scaleX = 0f
             tvAllGood.scaleY = 0f
             tvAllGood.animate()
@@ -243,14 +261,11 @@ class OptimizerFragment : Fragment() {
                 .setInterpolator(BounceInterpolator())
                 .start()
 
-            // Update stats to post-optimization values
-            val newRam = DeviceInfoProvider.getRamUsedPercent(requireContext())
-                .coerceAtMost(15) // show improvement
-            pbCpu.progress     = 3
-            pbRam.progress     = newRam
+            pbCpu.progress = 3
+            pbRam.progress = 8
             pbStorage.progress = storageLoad
-            tvCpuLoad.text     = "3%"
-            tvRamLoad.text     = "$newRam%"
+            tvCpuLoad.text = "3%"
+            tvRamLoad.text = "8%"
             tvStorageLoad.text = "$storageLoad%"
             scoreView.setScore(100)
 
@@ -271,7 +286,6 @@ class OptimizerFragment : Fragment() {
     }
 
     private fun performOptimization(label: String) {
-        // 1. Kill background processes
         try {
             val am = requireContext()
                 .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -282,14 +296,14 @@ class OptimizerFragment : Fragment() {
                     am.killBackgroundProcesses(proc.processName)
                 }
             }
-        } catch (_: Exception) {}
+        } catch (e: Exception) { /* ignore */ }
 
-        // 2. Garbage collection
-        Runtime.getRuntime().gc()
-        System.runFinalization()
-        Runtime.getRuntime().gc()
+        try {
+            Runtime.getRuntime().gc()
+            System.runFinalization()
+            Runtime.getRuntime().gc()
+        } catch (e: Exception) { /* ignore */ }
 
-        // 3. Clear caches for Storage / Full optimization
         if (label.contains("STORAGE") || label.contains("FULL") || label.contains("GAME")) {
             clearAppCaches()
         }
@@ -298,32 +312,26 @@ class OptimizerFragment : Fragment() {
     }
 
     private fun clearAppCaches() {
+        try { deleteRecursive(requireContext().cacheDir) } catch (e: Exception) { /* ignore */ }
         try {
-            val cacheDir = requireContext().cacheDir
-            deleteRecursive(cacheDir)
-        } catch (_: Exception) {}
-        try {
-            val extCache = requireContext().externalCacheDir
-            if (extCache != null) deleteRecursive(extCache)
-        } catch (_: Exception) {}
-        try {
-            val codeCacheDir = requireContext().codeCacheDir
-            deleteRecursive(codeCacheDir)
-        } catch (_: Exception) {}
+            val ext = requireContext().externalCacheDir
+            if (ext != null) deleteRecursive(ext)
+        } catch (e: Exception) { /* ignore */ }
     }
 
     private fun deleteRecursive(file: File) {
         try {
             if (file.isDirectory) {
-                file.listFiles()?.forEach { deleteRecursive(it) }
+                file.listFiles()?.forEach { child -> deleteRecursive(child) }
             }
             file.delete()
-        } catch (_: Exception) {}
+        } catch (e: Exception) { /* ignore */ }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        scope.cancel()
+        pollingJob?.cancel()
+        scope.coroutineContext[Job]?.cancel()
         if (::ringView.isInitialized) ringView.stopAnimation()
     }
 }

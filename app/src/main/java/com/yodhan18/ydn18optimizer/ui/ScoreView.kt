@@ -2,7 +2,13 @@ package com.yodhan18.ydn18optimizer.ui
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -35,7 +41,7 @@ class ScoreView @JvmOverloads constructor(
     private val goodPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor("#00E676")
         textAlign = Paint.Align.CENTER
-        textSize = 28f
+        textSize = 24f
         typeface = Typeface.DEFAULT_BOLD
     }
 
@@ -53,8 +59,8 @@ class ScoreView @JvmOverloads constructor(
             val anim = ValueAnimator.ofInt(displayScore, newScore)
             anim.duration = 1200
             anim.interpolator = DecelerateInterpolator()
-            anim.addUpdateListener {
-                displayScore = it.animatedValue as Int
+            anim.addUpdateListener { animator ->
+                displayScore = animator.animatedValue as Int
                 score = displayScore
                 invalidate()
             }
@@ -68,34 +74,39 @@ class ScoreView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        if (width == 0 || height == 0) return
+
         val cx = width / 2f
         val cy = height / 2f
         val radius = (minOf(width, height) / 2f) - 20f
+        val rect = RectF(cx - radius, cy - radius, cx + radius, cy + radius)
 
         // Background arc
-        val rect = RectF(cx - radius, cy - radius, cx + radius, cy + radius)
         canvas.drawArc(rect, 135f, 270f, false, bgPaint)
 
-        // Colored arc based on score
-        val color = when {
+        // Colored arc
+        val arcColor = when {
             score >= 80 -> Color.parseColor("#00E676")
             score >= 50 -> Color.parseColor("#FFD600")
             else -> Color.parseColor("#FF1744")
         }
-        arcPaint.color = color
+        arcPaint.color = arcColor
         arcPaint.shader = LinearGradient(
             cx - radius, cy, cx + radius, cy,
-            Color.parseColor("#00E5FF"), color, Shader.TileMode.CLAMP
+            Color.parseColor("#00E5FF"), arcColor,
+            Shader.TileMode.CLAMP
         )
         val sweep = (score / 100f) * 270f
         canvas.drawArc(rect, 135f, sweep, false, arcPaint)
 
-        // Score text
+        // Text
         if (showAllGood) {
-            canvas.drawText("100", cx, cy + 16f, textPaint.apply { color = Color.parseColor("#00E676") })
-            canvas.drawText("All Good ✓", cx, cy + 48f, goodPaint)
+            textPaint.color = Color.parseColor("#00E676")
+            canvas.drawText("100", cx, cy + 16f, textPaint)
+            canvas.drawText("All Good!", cx, cy + 46f, goodPaint)
         } else {
-            canvas.drawText("$score", cx, cy + 16f, textPaint.apply { color = Color.WHITE })
+            textPaint.color = Color.WHITE
+            canvas.drawText("$score", cx, cy + 16f, textPaint)
             canvas.drawText("Mobile Score", cx, cy + 44f, labelPaint)
         }
     }
