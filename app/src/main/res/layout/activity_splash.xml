@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_deep">
+
+    <!-- Particle canvas (drawn programmatically) -->
+    <com.yodhan18.ydn18optimizer.ui.ParticleView
+        android:id="@+id/particleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Logo container -->
+    <LinearLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- App icon / logo -->
+        <com.yodhan18.ydn18optimizer.ui.GlowImageView
+            android:id="@+id/splashLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/splashTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="YDN18 OPTIMIZER"
+            android:textColor="@color/neon_cyan"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:fontFamily="sans-serif-condensed" />
+
+        <TextView
+            android:id="@+id/splashSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="GAMING PERFORMANCE SUITE"
+            android:textColor="@color/neon_orange"
+            android:textSize="11sp"
+            android:letterSpacing="0.2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/splashVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="v1.0.01"
+            android:textColor="#546E7A"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- Loading bar at bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <ProgressBar
+            android:id="@+id/splashProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:progress="0"
+            android:progressTint="@color/neon_cyan"
+            android:progressBackgroundTint="#1E2A4A"
+            android:indeterminate="false" />
+
+        <TextView
+            android:id="@+id/splashLoadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Initializing…"
+            android:textColor="#546E7A"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_deep"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PERMISSIONS REQUIRED"
+        android:textColor="@color/neon_cyan"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.1"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All permissions marked with * are required. The app will not work without them."
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Permission list -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/permissionsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <!-- Status message -->
+    <TextView
+        android:id="@+id/tvPermStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:text="Grant all required permissions to continue"
+        android:textColor="@color/neon_orange"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <!-- Continue button -->
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="GRANT ALL PERMISSIONS FIRST"
+        android:textColor="@color/bg_deep"
+        android:textStyle="bold"
+        android:background="@drawable/bg_button_gradient"
+        android:padding="14dp"
+        android:alpha="0.4" />
+
+</LinearLayout>

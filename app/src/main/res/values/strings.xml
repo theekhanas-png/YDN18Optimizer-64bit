@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">YDN18 OPTIMIZER</string>
+    <string name="app_version">Version 1.0.01</string>
+    <string name="app_release">Released May 18, 2026</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_optimizer">Optimizer</string>
+    <string name="nav_sensitivity">Sensitivity</string>
+
+    <!-- Home -->
+    <string name="developer_info">Developer Yodhan 18\nContent Creator | Developer | B.Tech</string>
+    <string name="device_info">Poco M5 · 4GB RAM + 64GB Storage</string>
+    <string name="social_youtube">YouTube</string>
+    <string name="social_instagram">Instagram</string>
+    <string name="social_discord">Discord</string>
+    <string name="social_telegram">Telegram</string>
+    <string name="hud_code_label">Custom HUD Code</string>
+    <string name="hud_code_value">#FFHUDT6O3jmR/HslPo7eO</string>
+    <string name="hud_code_copied">HUD Code copied to clipboard!</string>
+    <string name="highlight_1">Highlight 1</string>
+    <string name="highlight_2">Highlight 2</string>
+    <string name="highlight_3">Highlight 3</string>
+    <string name="version_info">Version 1.0.01 | Released May 18, 2026</string>
+
+    <!-- Optimizer -->
+    <string name="btn_full_optimize">Full Mobile Optimization</string>
+    <string name="btn_ram_optimize">RAM Optimizer</string>
+    <string name="btn_storage_clean">Storage Cleaner</string>
+    <string name="btn_boost_cpu">Boost CPU</string>
+    <string name="btn_game_optimize">Game Optimization</string>
+    <string name="optimizing_label">Optimizing…</string>
+    <string name="all_good">All Good ✓</string>
+    <string name="mobile_score">Mobile Score</string>
+
+    <!-- Sensitivity -->
+    <string name="btn_generate">GENERATE SENSITIVITY</string>
+    <string name="btn_regenerate">RE-GENERATE</string>
+    <string name="analysing_device">Analysing device…</string>
+    <string name="optimizing_sensitivity">Optimizing sensitivity according to device…</string>
+    <string name="almost_there">Almost there…</string>
+    <string name="sensitivity_general">General Sensitivity</string>
+    <string name="sensitivity_red_dot">Red Dot</string>
+    <string name="sensitivity_2x">2x Scope</string>
+    <string name="sensitivity_4x">4x Scope</string>
+    <string name="sensitivity_sniper">Sniper Scope</string>
+    <string name="sensitivity_fire">Fire Button Size</string>
+    <string name="sensitivity_dpi">DPI (Smallest Width)</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Dark / Light Theme</string>
+    <string name="settings_sound">Sound Settings</string>
+    <string name="settings_bg_music">Background Music</string>
+    <string name="settings_click_sound">Click Sounds</string>
+    <string name="settings_haptic">Haptic Feedback</string>
+    <string name="settings_notifications">Notification Settings</string>
+    <string name="settings_volume">Volume</string>
+
+    <!-- Permissions -->
+    <string name="perm_title">Permissions Required</string>
+    <string name="perm_notifications">Notifications – To show optimization alerts</string>
+    <string name="perm_storage">All Files Access – To clean storage &amp; cache</string>
+    <string name="perm_usage_stats">Usage Access – To detect running apps</string>
+    <string name="perm_accessibility">Accessibility – To perform system-level optimizations</string>
+    <string name="perm_battery">Battery Optimization – To run optimizer in background</string>
+    <string name="perm_system_settings">Modify System Settings – To apply performance tweaks</string>
+    <string name="perm_grant">Grant</string>
+    <string name="perm_skip">Skip</string>
+    <string name="perm_go_settings">Go to Settings</string>
+    <string name="perm_continue">Continue</string>
+
+    <!-- Service -->
+    <string name="service_notification_title">YDN18 Optimizer Active</string>
+    <string name="service_notification_text">Optimizer is running in background</string>
+    <string name="notification_channel_name">Optimizer</string>
+    <string name="notification_channel_desc">YDN18 Optimizer background service</string>
+
+    <!-- Accessibility -->
+    <string name="accessibility_service_label">YDN18 Optimizer Accessibility</string>
+    <string name="accessibility_service_description">Allows YDN18 Optimizer to perform system-level optimizations and monitor app activity.</string>
+</resources>

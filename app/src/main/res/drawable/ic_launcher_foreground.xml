@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Bolt / lightning icon in neon cyan -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M45,14v36h12v44l24,-48H63l12,-32z" />
+</vector>

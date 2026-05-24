@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_deep">
+
+    <!-- Main content -->
+    <ScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Device Stats Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="8dp"
+                app:strokeColor="@color/neon_cyan"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DEVICE STATUS"
+                        android:textColor="@color/neon_cyan"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.15"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Device model row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Device"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/tvDeviceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Processor -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Processor"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/tvProcessor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- RAM -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total RAM"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/tvRam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Storage -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Storage"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/tvStorage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Load bars section title -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SYSTEM LOAD"
+                        android:textColor="@color/neon_orange"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.12"
+                        android:layout_marginBottom="10dp" />
+
+                    <!-- CPU load bar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="CPU"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                        <ProgressBar
+                            android:id="@+id/pbCpu"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="8dp"
+                            android:layout_weight="1"
+                            android:progress="50"
+                            android:progressTint="@color/neon_cyan"
+                            android:progressBackgroundTint="#1E2A4A"
+                            android:indeterminate="false" />
+                        <TextView
+                            android:id="@+id/tvCpuLoad"
+                            android:layout_width="44dp"
+                            android:layout_height="wrap_content"
+                            android:text="50%"
+                            android:textColor="@color/neon_cyan"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!-- RAM load bar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="RAM"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                        <ProgressBar
+                            android:id="@+id/pbRam"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="8dp"
+                            android:layout_weight="1"
+                            android:progress="60"
+                            android:progressTint="@color/neon_orange"
+                            android:progressBackgroundTint="#1E2A4A"
+                            android:indeterminate="false" />
+                        <TextView
+                            android:id="@+id/tvRamLoad"
+                            android:layout_width="44dp"
+                            android:layout_height="wrap_content"
+                            android:text="60%"
+                            android:textColor="@color/neon_orange"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!-- Storage load bar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="Storage"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                        <ProgressBar
+                            android:id="@+id/pbStorage"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="8dp"
+                            android:layout_weight="1"
+                            android:progress="40"
+                            android:progressTint="@color/neon_gold"
+                            android:progressBackgroundTint="#1E2A4A"
+                            android:indeterminate="false" />
+                        <TextView
+                            android:id="@+id/tvStorageLoad"
+                            android:layout_width="44dp"
+                            android:layout_height="wrap_content"
+                            android:text="40%"
+                            android:textColor="@color/neon_gold"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!-- Score view -->
+                    <com.yodhan18.ydn18optimizer.ui.ScoreView
+                        android:id="@+id/scoreView"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Optimizer Buttons — FIX 2: NO EMOJIS, plain text only -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OPTIMIZATION TOOLS"
+                android:textColor="@color/neon_orange"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.15"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/btnFullOptimize"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="10dp"
+                android:text="FULL MOBILE OPTIMIZATION"
+                android:textColor="@color/bg_deep"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:background="@drawable/bg_button_gradient"
+                android:letterSpacing="0.05" />
+
+            <Button
+                android:id="@+id/btnRamOptimize"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:text="RAM OPTIMIZER"
+                android:textColor="@color/neon_cyan"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:background="@drawable/bg_optimizer_btn"
+                android:letterSpacing="0.05" />
+
+            <Button
+                android:id="@+id/btnStorageClean"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:text="STORAGE CLEANER"
+                android:textColor="@color/neon_cyan"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:background="@drawable/bg_optimizer_btn"
+                android:letterSpacing="0.05" />
+
+            <Button
+                android:id="@+id/btnBoostCpu"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:text="BOOST CPU"
+                android:textColor="@color/neon_cyan"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:background="@drawable/bg_optimizer_btn"
+                android:letterSpacing="0.05" />
+
+            <Button
+                android:id="@+id/btnGameOptimize"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="80dp"
+                android:text="GAME OPTIMIZATION"
+                android:textColor="@color/neon_cyan"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:background="@drawable/bg_optimizer_btn"
+                android:letterSpacing="0.05" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Optimizing Overlay -->
+    <FrameLayout
+        android:id="@+id/optimizingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlay_bg"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp">
+
+            <com.yodhan18.ydn18optimizer.ui.OptimizerRingView
+                android:id="@+id/ringView"
+                android:layout_width="180dp"
+                android:layout_height="180dp" />
+
+            <TextView
+                android:id="@+id/tvOptimizingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Optimizing..."
+                android:textColor="@color/neon_cyan"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvOptimizingStep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Killing background processes..."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvAllGood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="All Good - Optimization Complete!"
+                android:textColor="@color/neon_green"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base theme -->
+    <style name="Theme.YDN18Optimizer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/neon_cyan</item>
+        <item name="colorPrimaryVariant">@color/neon_blue</item>
+        <item name="colorOnPrimary">@color/bg_deep</item>
+        <item name="colorSecondary">@color/neon_orange</item>
+        <item name="colorSecondaryVariant">@color/neon_gold</item>
+        <item name="colorOnSecondary">@color/bg_deep</item>
+        <item name="android:colorBackground">@color/bg_deep</item>
+        <item name="colorSurface">@color/bg_card</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/neon_red</item>
+        <item name="android:statusBarColor">@color/bg_deep</item>
+        <item name="android:navigationBarColor">@color/bg_deep</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+    </style>
+
+    <!-- Splash theme (no action bar, fullscreen) -->
+    <style name="Theme.YDN18Optimizer.Splash" parent="Theme.YDN18Optimizer">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/bg_deep</item>
+    </style>
+
+    <!-- Card style -->
+    <style name="GameCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/bg_card</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">8dp</item>
+        <item name="strokeColor">@color/card_border</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Primary button -->
+    <style name="GamingButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/bg_deep</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="backgroundTint">@color/neon_orange</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <!-- Secondary button -->
+    <style name="GamingButtonSecondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/neon_cyan</item>
+        <item name="android:textStyle">bold</item>
+        <item name="strokeColor">@color/neon_cyan</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Optimizer button -->
+    <style name="OptimizerButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="backgroundTint">@color/bg_card</item>
+        <item name="strokeColor">@color/neon_cyan</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="GamingToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/bg_deep</item>
+        <item name="titleTextColor">@color/neon_cyan</item>
+        <item name="titleTextAppearance">@style/ToolbarTitleText</item>
+    </style>
+
+    <style name="ToolbarTitleText" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/neon_cyan</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <!-- Bottom Navigation -->
+    <style name="GamingBottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/bg_surface</item>
+        <item name="itemIconTint">@color/nav_selector</item>
+        <item name="itemTextColor">@color/nav_selector</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <!-- Sensitivity result card text -->
+    <style name="SensLabel" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <style name="SensValue" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/neon_cyan</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+</resources>
