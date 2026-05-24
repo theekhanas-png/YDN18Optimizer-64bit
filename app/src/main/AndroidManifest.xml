@@ -4,7 +4,6 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
@@ -82,12 +81,7 @@
         <!-- Foreground Service -->
         <service
             android:name=".OptimizerForegroundService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="optimizer" />
-        </service>
+            android:exported="false" />
 
         <!-- Accessibility Service -->
         <service

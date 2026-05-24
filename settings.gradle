@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "YDN18 OPTIMIZER"
+rootProject.name = "YDN18Optimizer"
 include ':app'
