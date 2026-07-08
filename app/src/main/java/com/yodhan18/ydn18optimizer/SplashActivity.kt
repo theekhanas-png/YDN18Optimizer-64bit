@@ -56,12 +56,5 @@ class SplashActivity : AppCompatActivity() {
             val prefs = getSharedPreferences("ydn18_prefs", MODE_PRIVATE)
             val firstLaunch = prefs.getBoolean("first_launch", true)
             if (firstLaunch) {
-                startActivity(Intent(this, PermissionSetupActivity::class.java))
-            } else {
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            finish()
-        }, 3000)
-    }
-}
+                startActivity(Intent(this, P
+                                     
